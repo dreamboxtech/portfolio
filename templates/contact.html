@@ -1,12 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact</title>
-</head>
-<body>
-    Contact Page
-</body>
-</html>
+{% extends 'base.html' %}
+
+
+{% block 'content' %}
+<div class='container my-3 w-50'>
+    <h3>Contact me</h3>
+</div>
+<div class='container w-50'>
+    <form class="row g-3">
+        <div class="col-md-4">
+          <label for="validationDefault01" class="form-label">First name</label>
+          <input type="text" class="form-control" id="validationDefault01" required>
+        </div>
+        <div class="col-md-4">
+          <label for="validationDefault02" class="form-label">Last name</label>
+          <input type="text" class="form-control" id="validationDefault02" required>
+        </div>
+        
+        
+    <div>
+    <label for="exampleFormControlInput1" class="form-label">Email address</label>
+    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+  </div>
+  <div class="mb-3">
+    <label for="exampleFormControlTextarea1" class="form-label">Message</label>
+    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+    <div class="col-12">
+    </div>
+    <div class="col-12 my-5">
+        <button class="btn btn-primary" type="submit">Submit form</button>
+      </div>
+    </form>
+   </div>
+</div>
+
+{% endblock 'content' %}

@@ -12,26 +12,28 @@
           <li class="nav-item">
             <a class="nav-link text-white" href="{% url "homer:about" %}">About</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link text-white" href="{% url "homer:projects" %}">Projects</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-white" href="{% url "homer:contact" %}">Reach me</a>
-          </li>
-          {% comment %} <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Dropdown
+                  
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="{% url "homer:projects" %}"role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Projects
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><a class="dropdown-item" href="#">Django</a></li>
+              <li><a class="dropdown-item" href="#">Desktop</a></li>
+              <li><a class="dropdown-item" href="#">Laravel</a></li>
+              <li><a class="dropdown-item" href="#">Flask</a></li>
+              <li><a class="dropdown-item" href="#">Data Analysis</a></li>
+              <li><a class="dropdown-item" href="#">Data Science</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
+              <li><a class="dropdown-item" href="#">Others</a></li>
             </ul>
-          </li> {% endcomment %}
+          </li>
           {% comment %} <li class="nav-item">
             <a class="nav-link disabled">Disabled</a>
           </li> {% endcomment %}
+          <li class="nav-item">
+            <a class="nav-link text-white" href="{% url "homer:contact" %}">Reach me</a>
+          </li>
         </ul>
         <form class="d-flex" role="search">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
