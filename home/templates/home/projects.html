@@ -2,15 +2,21 @@
 
 
 {% block 'content' %}
-<h1>Basic Portfolio Project</h1>
+<h3>Basic Portfolio Project</h3>
     <div>
-        {% for char in data %}
+        {% for project in projects %}
         <ul>
-            {% if not char in excluded %}
+            
             <li>
-                {{ char }}
+                {{ project.title }} {{ project.date_started }}
+
             </li>
-            {% endif %}
+            <!-- <li>
+               {{ project.date_started }}
+
+            </li> -->
+
+
         </ul>
         {% endfor %}
     </div>

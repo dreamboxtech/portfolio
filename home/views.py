@@ -1,4 +1,6 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
+from .forms import ProjectForm
+from .models import Project
 
 # Create your views here.
 def home(request):
@@ -12,11 +14,25 @@ def about(request):
     return render(request, 'about.html')
 
 def projects(request):
-    excluded = ['F', 'T', 'D', 'E', 'O', 'P']
-    res = [chr(x).upper() for x in range(97, 123)]
+    projects = Project.objects.all()
+
     context = {
-        'data': res,
-        'excluded': excluded
+        'projects': projects
     }
     return render(request, 'home/projects.html', context)
+
+def register_project(request):
+    form = ProjectForm()
+    if request.method == 'POST':
+        form = ProjectForm(request.POST)
+        if  form.is_valid():            
+            form.save()
+            return redirect('/projects')
+        
+    context = {
+        'form': form
+    }
+    return render(request, "reg_project.html", context)
+
+
 
