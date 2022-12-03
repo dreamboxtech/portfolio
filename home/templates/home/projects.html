@@ -2,22 +2,21 @@
 
 
 {% block 'content' %}
-<h3>Basic Portfolio Project</h3>
-    <div>
-        {% for project in projects %}
-        <ul>
-            
-            <li>
-                {{ project.title }} {{ project.date_started }}
-
-            </li>
-            <!-- <li>
-               {{ project.date_started }}
-
-            </li> -->
-
-
-        </ul>
-        {% endfor %}
+<h3 class="text-center mt-3">Project List</h3>
+    <div class="container">
+        <div class="row row-cols-1 row-cols-md-3">
+            {% for project in projects %}
+            <div class="col">
+                <div class="card my-3">
+                  <img src="{{project.images}}" class="card-img-top" alt="...">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ project.title }}</h5>
+                    <p class="card-text">{{ project.description|truncatewords:15 }}</p>
+                    <a href="#" class="btn btn-primary">See projects details</a>
+                  </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>                 
     </div>
 {% endblock 'content' %}
