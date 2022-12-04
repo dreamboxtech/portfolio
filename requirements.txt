@@ -1,0 +1,9 @@
+asgiref==3.5.2
+certifi @ file:///C:/ci/certifi_1655889035820/work/certifi
+crispy-tailwind==0.5.0
+Django==3.0.6
+django-crispy-forms==1.14.0
+Pillow==9.3.0
+pytz==2022.6
+sqlparse==0.4.3
+wincertstore==0.2

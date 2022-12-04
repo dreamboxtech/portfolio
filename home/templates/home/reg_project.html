@@ -1,15 +1,18 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load tailwind_filters %}
 
 
 {% block 'content' %}
-<h3 class="text-center">Register a Project</h3>
+<h2 class="text-center text-xl my-3 font-bold">Register a Project</h2>
 
-<div class="container">
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-</form>
+<div class="max-w-lg mx-auto my-4">
+	<form method="POST" enctype="multipart/form-data">
+	    {% csrf_token %}
+	    <!-- {{ form|crispy }} -->
+	    {% crispy form %}
+	    <button type="submit" class="w-full bg-blue-300 hover:bg-blue-400 px-3 py-1">Submit</button>
+	</form>
 </div>
 
 {% endblock 'content' %}

@@ -35,7 +35,7 @@ def project_details(request, pk):
 def register_project(request):
     form = ProjectForm()
     if request.method == 'POST':
-        form = ProjectForm(request.POST, request.Files)
+        form = ProjectForm(request.POST, request.FILES)
         if  form.is_valid():            
             form.save()
             return redirect('/projects')
