@@ -7,12 +7,13 @@
 <h2 class="text-center text-xl my-3 font-bold">Register a Project</h2>
 
 <div class="max-w-lg mx-auto my-4">
-	<form method="POST" enctype="multipart/form-data">
+	<!-- <form method="POST" enctype="multipart/form-data">
 	    {% csrf_token %}
-	    <!-- {{ form|crispy }} -->
-	    {% crispy form %}
+	    {{ form|crispy }}
+
 	    <button type="submit" class="w-full bg-blue-300 hover:bg-blue-400 px-3 py-1">Submit</button>
-	</form>
+	</form> -->
+	{% crispy form %}
 </div>
 
 {% endblock 'content' %}
