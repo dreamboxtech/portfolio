@@ -23,12 +23,13 @@ def projects(request):
 
 def project_details(request, pk):
 
-    project = Project.objects.filter(id=pk)
-
+    # project = Project.objects.filter(id=pk)
+    project = Project.objects.get(id=pk) 
+   
     context = {
         'project': project
     }
-    return render(request, 'project_details.html', context)
+    return render(request, 'home/project_details.html', context)
 
 
 
@@ -46,4 +47,5 @@ def register_project(request):
     return render(request, "home/reg_project.html", context)
 
 
-
+def handler404(request, exception):
+    return render(request, '404.html')
