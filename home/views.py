@@ -1,4 +1,5 @@
 from django.shortcuts import render, HttpResponse, redirect
+from django.core.paginator import Paginator
 from .forms import ProjectForm
 from .models import Project
 
@@ -16,18 +17,26 @@ def about(request):
 def projects(request):
     projects = Project.objects.all()
 
+    paginator = Paginator(projects, 6) #
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'projects': projects
+        'projects': projects,
+        'page_obj': page_obj
     }
     return render(request, 'home/projects.html', context)
 
 def project_details(request, pk):
 
     # project = Project.objects.filter(id=pk)
-    project = Project.objects.get(id=pk) 
-   
+    project = Project.objects.get(id=pk)
+    categories = list(project.category)
+    print(categories)
     context = {
-        'project': project
+        'project': project,
+        'categories': categories
     }
     return render(request, 'home/project_details.html', context)
 

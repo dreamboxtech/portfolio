@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     # Third-party apps
     'crispy_forms',
     'crispy_tailwind',
+    'multiselectfield',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -128,6 +130,18 @@ USE_TZ = True
 
 # handler404 = 'home.views.handler404'
 
+CKEDITOR_CONFIGS = {
+    'my_basic_config': {
+         'height': 100,
+         'width': 500,
+          # 'toolbar': 'Basic',
+    },
+
+    'another_config': {
+        'toolbar': 'Basic'
+    }
+}
+# https://github.com/django-ckeditor/django-ckeditor#optional-customizing-ckeditor-editor
 
 STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

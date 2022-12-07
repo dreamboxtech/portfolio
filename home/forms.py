@@ -4,6 +4,7 @@ from crispy_forms.layout import Layout, HTML, Row, Column
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
+
 # Date modules
 
 from django.contrib.admin.widgets import AdminDateWidget
@@ -29,6 +30,7 @@ class ProjectForm(forms.ModelForm):
 				'keywords',
 				'description',
 				'stage',
+				'category',
 				'date_started',
 				'date_ended',
 				'images',
@@ -49,13 +51,16 @@ class ProjectForm(forms.ModelForm):
 			 Row(
 				Column(
 					'description',
-					css_class='col-md-10'
-				)
+					css_class='max-w-s'
+				),
 			),
 			Row(
 				Column('stage', css_class='col-md-4'),
 				Column('date_started', css_class='col-md-4 mx-2'),
 				Column( 'date_ended', css_class='col-md-4')
+			),
+			Row(
+				Column('category', css_class='overflow-y-scroll max-h-40'),
 			),
 			Row(
 				Column('images', css_class='col-md-4'),
