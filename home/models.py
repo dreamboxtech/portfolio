@@ -34,14 +34,25 @@ class Project(models.Model):
 	keywords = models.CharField(max_length=100)
 	description = RichTextField(verbose_name="Project Description", config_name='my_basic_config')
 	stage = models.CharField(choices=STAGES, max_length=20)
-	date_started = models.DateField(blank=False)
+	date_started = models.DateField()
 	date_ended = models.DateField()
-	images = models.ImageField(upload_to='images/', blank=True, null=True)
-	category = MultiSelectField(choices=CATEGORIES, default='BACKEND')
+	
+	category = MultiSelectField(choices=CATEGORIES, default='BACKEND',
+							    verbose_name="Project Category")
 	technology = models.CharField(max_length=30, null=True)
 
 
 	def __str__(self):
 		return self.title
+
+
+class Images(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    images = models.ImageField(upload_to='images/', blank=True, null=True,
+							   verbose_name="Project Images")
+
+    def __str__(self):
+    	return self.project.title
+
 
 # Category, Technologies

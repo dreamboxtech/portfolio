@@ -8,9 +8,10 @@
         {% for project in page_obj %}
         <div class="col">
             <div class="card my-2">
-                {% if project.images %}
-                    <img src="{{ project.images.url }}" class="card-img-top" alt="...">
-                {% endif %}
+                    <!-- <img src="{{ project.images.url }}" class="card-img-top" alt="..."> -->
+                    {% if project.id == images.0.project.id %}
+                        <img src="{{ images.0.images.url }}" class="card-img-top" alt="...">
+                    {% endif %}
               <div class="card-body">
                 <h5 class="card-title font-bold">{{ project.title }}</h5>
                 <p class="card-text">{{ project.description|safe|truncatewords:15 }}
