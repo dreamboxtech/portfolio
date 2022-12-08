@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import ClearableFileInput
 from .models import Project
 from crispy_forms.layout import Layout, HTML, Row, Column
 from crispy_forms.helper import FormHelper
@@ -37,7 +38,8 @@ class ProjectForm(forms.ModelForm):
 			)
 		widgets = {
 	        'date_started': forms.TextInput(attrs={'type': 'date'}),
-	        'date_ended': forms.TextInput(attrs={'type': 'date'})
+	        'date_ended': forms.TextInput(attrs={'type': 'date'}),
+	        'images': ClearableFileInput(attrs={'multiple': True}),
     }
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
