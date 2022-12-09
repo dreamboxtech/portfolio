@@ -2,16 +2,17 @@
 
 
 {% block 'content' %}
+
+<!-- {% if forloop.counter0 <= 2 %} -->
+<!-- {% endif %} -->
+
 <h2 class="text-center mt-3 font-bold">Project List</h2>
 <div class="container">
     <div class="row row-cols-1 row-cols-md-3">
-        {% for project in page_obj %}
+    {% for project in page_obj %}
         <div class="col">
             <div class="card my-2">
-                    <!-- <img src="{{ project.images.url }}" class="card-img-top" alt="..."> -->
-                    {% if project.id == images.0.project.id %}
-                        <img src="{{ images.0.images.url }}" class="card-img-top" alt="...">
-                    {% endif %}
+            <img src="{{ project.images_set.first }}" class="card-img-top" alt="...">
               <div class="card-body">
                 <h5 class="card-title font-bold">{{ project.title }}</h5>
                 <p class="card-text">{{ project.description|safe|truncatewords:15 }}
@@ -21,7 +22,7 @@
               </div>
             </div>
         </div>
-        {% endfor %}
+    {% endfor %}
     </div>                 
 </div>
 
@@ -42,4 +43,5 @@
         {% endif %}
     </span>
 </div>
+
 {% endblock 'content' %}

@@ -52,7 +52,12 @@ class Images(models.Model):
 							   verbose_name="Project Images")
 
     def __str__(self):
-    	return self.project.title
+    	# return self.project.title
+    	return self.images.url
+
+    @property
+    def get_url():
+    	return images.url
 
 
 # Category, Technologies

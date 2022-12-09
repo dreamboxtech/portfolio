@@ -16,18 +16,19 @@ def about(request):
 	return render(request, 'about.html')
 
 def projects(request):
-	projects = Project.objects.all()
-	images = Images.objects.all()
+	projects = Project.objects.prefetch_related('images_set').all()
+	# images = Images.objects.all()
 
 	paginator = Paginator(projects, 6) #
 	page_number = request.GET.get('page')
 	page_obj = paginator.get_page(page_number)
 
+	
+	
 
 	context = {
 		'projects': projects,
 		'page_obj': page_obj,
-		'images': images
 	}
 	return render(request, 'home/projects.html', context)
 
@@ -40,7 +41,6 @@ def project_details(request, pk):
 	keywords = project.keywords.split(',')
 	categories = list(project.category)
 
-	print(keywords)
 	
 	context = {
 		'project': project,
@@ -87,6 +87,25 @@ def register_project(request):
 		
 	}
 	return render(request, "home/reg_project.html", context)
+
+
+def edit_project(request, pk):
+	pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
