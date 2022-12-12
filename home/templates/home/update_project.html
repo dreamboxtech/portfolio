@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load tailwind_filters %}
+
+
+{% block 'content' %}
+<h2 class="text-center text-xl my-3 font-bold">Update this Project</h2>
+
+<div class="max-w-lg mx-auto my-4">
+
+<form method="POST" enctype="multipart/form-data">
+	{% csrf_token %}
+
+	{% crispy project %}
+	<input type="submit" name="Submit" class="float-right my-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+</form>
+</div>
+
+<div class="max-w-6xl mx-auto my-4">
+
+	<hr class="my-6 mt-20">
+	<h4 class="text-center text-xl my-3 font-bold">Project Images</h4>
+</div>
+
+<div class="">
+	
+	<div class="grid grid-flow-col auto-cols-max gap-x-5 justify-center">
+		{% for image in images %}
+		<img src="{{ image.images.url }}" class="h-auto w-60" >
+		{% endfor %}
+	</div>
+	
+</div>
+
+
+{% endblock 'content' %}
+

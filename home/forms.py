@@ -44,6 +44,7 @@ class ProjectForm(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self.helper = FormHelper()
+		self.helper.form_tag = False
 		self.helper.layout = Layout(
 			 Row(
 				Column('title', css_class='form-group col-md-6 mb-0 ml-2'),
@@ -71,6 +72,34 @@ class ProjectForm(forms.ModelForm):
 )
 
 
+# class ImageForm(forms.ModelForm):
+# 	images = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
+	
+# 	class Meta:
+# 		model = Images
+# 		fields = ('images',)
+
+# 	def __init__(self, *args, **kwargs):
+# 		super().__init__(*args, **kwargs)
+# 		self.helper = FormHelper()
+# 		self.helper.layout = Layout(
+# 			 Row(
+# 				Column('images', css_class='form-group col-md-6 mb-0 ml-2'),             
+# 			),
+# 			 Row(
+# 				Submit('submit', 'Submit', css_class='col-md-5 float-right my-3')
+# 			)
+# 	)
+
+
+
+
+
+
+
+
+
+
 class ImageForm(ProjectForm):
 	images = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
 	
@@ -88,5 +117,24 @@ class ImageForm(ProjectForm):
 				Submit('submit', 'Submit', css_class='col-md-5 float-right my-3')
 			)]
 		)
+
+# class UpdateImageForm(ProjectForm):
+# 	images = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
+	
+# 	class Meta(ProjectForm.Meta):
+# 		fields = ProjectForm.Meta.fields + ('images',)
+
+# 	def __init__(self, *args, **kwargs):
+# 		super().__init__(*args, **kwargs)
+# 		# self.helper = FormHelper()
+# 		self.helper.layout.extend(
+# 			 [Row(
+# 				Column('images', css_class='form-group col-md-6 mb-0 ml-2'),             
+# 			),
+# 			 Row(
+# 				Submit('submit', 'Update', css_class='col-md-5 float-right my-3')
+# 			)]
+# 		)
+
 
 	

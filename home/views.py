@@ -1,8 +1,13 @@
-from django.shortcuts import render, HttpResponse, redirect
-from django.forms import modelformset_factory
+from django.shortcuts import render, HttpResponse, redirect, reverse
+from django.forms import modelformset_factory, inlineformset_factory
+from django.contrib import messages
+from django.views.generic import DeleteView, UpdateView
+
 from django.core.paginator import Paginator
-from .forms import ProjectForm, ImageForm
+from .forms import ProjectForm, ImageForm #UpdateImageForm
 from .models import Project, Images
+from itertools import chain
+
 
 # Create your views here.
 def home(request):
@@ -23,7 +28,8 @@ def projects(request):
 	page_number = request.GET.get('page')
 	page_obj = paginator.get_page(page_number)
 
-	
+	# for project in projects:
+	# 	print(project)
 	
 
 	context = {
@@ -52,8 +58,9 @@ def project_details(request, pk):
 
 
 def register_project(request):
+	project_form = ProjectForm()
 	form = ImageForm()
-	
+
 	if request.method == 'POST':
 		form = ImageForm(request.POST or None, request.FILES or None)
 		files = request.FILES.getlist('images')
@@ -79,18 +86,77 @@ def register_project(request):
 				
 			for f in files:
 				Images.objects.create(project=project, images=f)
-			
+			messages.success(request, "A new project was created successfully.")
 			return redirect('/projects')
 		
 	context = {
-		'form': form,
+
+		'form': form
 		
 	}
 	return render(request, "home/reg_project.html", context)
 
+#formset
+def change_filename(instance, filename):
+	fpath = pathlib.Path(filename)
+	new_fname =  str(uuid.uuid1()) # uuid1 --> uuid + timestamps
+	return f"images/{new_fname}{fpath.suffix}"	
+	
 
-def edit_project(request, pk):
-	pass
+def update_project(request, pk):
+	
+	# image_query = Images.objects.prefetch_related('project').filter(project_id=pk)
+	# p = Project.objects.prefetch_related('images_set')
+    # m = Images.objects.filter(project_id=pk).values_list('images', flat=True)
+
+    
+    project = Project.objects.get(id=pk)
+    project_instance = ProjectForm(instance= project)
+
+    images_qset = Images.objects.filter(project_id=pk)
+    
+    
+    if request.method == 'POST':
+
+    	form = ProjectForm(request.POST, instance=project)
+    	if form.is_valid():
+    		form.save()
+    		return redirect('/projects')
+
+    for image in images_qset:
+    	print("Images are: ", image.images.url)
+   
+
+
+    context = {
+    	'project': project_instance,
+    	'images': images_qset
+
+    }
+
+    
+
+    return render(request, 'home/update_project.html', context)
+
+
+
+
+
+# class ProjectUpdateView(UpdateView, pk):
+#     template_name = "home/update_project.html"
+#     queryset = Images.objects.get(id=pk)
+#     form_class = ImageForm
+
+#     def get_success_url(self) -> str:
+#         return reverse("homer:projects")
+
+
+# class ProjectDeleteView(DeleteView):
+#     template_name = "lead_delete.html"
+#     queryset = Lead.objects.all()
+
+#     def get_success_url(self) -> str:
+#         return reverse("leader:home")
 
 
 

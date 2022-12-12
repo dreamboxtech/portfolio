@@ -4,6 +4,14 @@
 {% block 'content' %}
 <div class="container">
 	<a href="{% url 'homer:projects' %}"><button class="btn btn-primary my-2">  Back to Projects</button></a>
+	<div class="float-right items-center">
+	
+	<a href="{% url 'homer:update_project' project.pk %}"> <button type="button" class="text-gray-900 bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium rounded-lg text-sm px-2 py-1 text-center mr-2 mb-2">Edit Project</button></a>
+
+	<button type="button" class=" mt-4 text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-sm px-2 py-1 text-center mr-2 ml-2 mb-2">Delete Project</button>
+	</div>
+
+
 </div>
 <hr>
 <div class="container grid grid-cols-2">
@@ -35,8 +43,15 @@
 		    <a href="#">
 		        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Project Description</h5>
 		    </a>
-		    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ project.description|safe }}</p>
+		    <div class="row row-cols-2">
+		    	<h5 class=" text-l font-bold tracking-tight text-gray-900 dark:text-white">Project Started: <span class="font-normal text-gray-700 dark:text-gray-400"> {{ project.date_started }} </span></h5>
+
+		    	<h5 class=" text-l font-bold tracking-tight text-gray-900 dark:text-white">Project Ended: <span class="font-normal text-gray-700 dark:text-gray-400"> {{ project.date_ended }} </span></h5>
+		    </div>
 		    
+		    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ project.description|safe }}</p>
+
+
 		</div>
 
 	</div>

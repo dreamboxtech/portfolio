@@ -1,6 +1,7 @@
 from django.db import models
 from multiselectfield import MultiSelectField
 from ckeditor.fields import RichTextField
+from django.template.defaultfilters import slugify
 # Create your models here.
 
 class Project(models.Model):
@@ -31,7 +32,7 @@ class Project(models.Model):
 	]
 
 	title = models.CharField(max_length=50, blank=False)
-	keywords = models.CharField(max_length=100)
+	keywords = models.CharField(max_length=100, verbose_name="Tech Stack (Comma Separated)")
 	description = RichTextField(verbose_name="Project Description", config_name='my_basic_config')
 	stage = models.CharField(choices=STAGES, max_length=20)
 	date_started = models.DateField()
@@ -55,9 +56,6 @@ class Images(models.Model):
     	# return self.project.title
     	return self.images.url
 
-    @property
-    def get_url():
-    	return images.url
 
 
 # Category, Technologies
