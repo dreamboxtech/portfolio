@@ -127,6 +127,8 @@ def update_project(request, pk):
 
 		if files:
 			for f in files:
+				if len(Images.objects.filter(project_id=pk)) == 6:
+					return redirect(f'/{pk}/update_project')
 				Images.objects.create(project=project, images=f)
 			messages.success(request, "A new project was created successfully.")
 			return redirect(f'/{pk}/update_project')
@@ -154,6 +156,10 @@ def delete_image(request, pk):
 	return redirect(f'/{pid}/update_project')
 
 
+def delete_project(request, pk):
+	project = Project.objects.get(id=pk)
+	project.delete()
+	return redirect('/projects')
 
 # class ProjectUpdateView(UpdateView, pk):
 #     template_name = "home/update_project.html"
