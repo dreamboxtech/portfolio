@@ -107,38 +107,51 @@ def update_project(request, pk):
 	
 	# image_query = Images.objects.prefetch_related('project').filter(project_id=pk)
 	# p = Project.objects.prefetch_related('images_set')
-    # m = Images.objects.filter(project_id=pk).values_list('images', flat=True)
+	# m = Images.objects.filter(project_id=pk).values_list('images', flat=True)
 
-    
-    project = Project.objects.get(id=pk)
-    project_instance = ProjectForm(instance= project)
+	
+	project = Project.objects.get(id=pk)
+	project_instance = ProjectForm(instance= project)
+	images_qset = Images.objects.filter(project_id=pk)
 
-    images_qset = Images.objects.filter(project_id=pk)
-    
-    
-    if request.method == 'POST':
+	files = request.FILES.getlist('images')
+	
+	
+	if request.method == 'POST':
 
-    	form = ProjectForm(request.POST, instance=project)
-    	if form.is_valid():
-    		form.save()
-    		return redirect('/projects')
+		form = ProjectForm(request.POST, instance=project)
+		if form.is_valid():
+			form.save()
+			return redirect(f'/projects/{pk}')
 
-    for image in images_qset:
-    	print("Images are: ", image.images.url)
+
+		if files:
+			for f in files:
+				Images.objects.create(project=project, images=f)
+			messages.success(request, "A new project was created successfully.")
+			return redirect(f'/{pk}/update_project')
+
+	for image in images_qset:
+		print("Images are: ", image.images.url)
    
 
 
-    context = {
-    	'project': project_instance,
-    	'images': images_qset
+	context = {
+		'project': project_instance,
+		'images': images_qset
 
-    }
+	}
 
-    
+	
 
-    return render(request, 'home/update_project.html', context)
+	return render(request, 'home/update_project.html', context)
 
 
+def delete_image(request, pk):
+	image = Images.objects.get(id=pk)
+	pid = image.project_id
+	image.delete()
+	return redirect(f'/{pid}/update_project')
 
 
 
