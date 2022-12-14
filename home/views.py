@@ -1,3 +1,4 @@
+from django.core.mail import send_mail
 from django.shortcuts import render, HttpResponse, redirect, reverse
 from django.forms import modelformset_factory, inlineformset_factory
 from django.contrib import messages
@@ -86,7 +87,7 @@ def register_project(request):
 				
 			for f in files:
 				Images.objects.create(project=project, images=f)
-			messages.success(request, "A new project was created successfully.")
+			messages.success(request, "A new project has been successfully created.")
 			return redirect('/projects')
 		
 	context = {
@@ -122,6 +123,7 @@ def update_project(request, pk):
 		form = ProjectForm(request.POST, instance=project)
 		if form.is_valid():
 			form.save()
+			messages.success(request, "The project has been successfully updated.")
 			return redirect(f'/projects/{pk}')
 
 
@@ -130,13 +132,8 @@ def update_project(request, pk):
 				if len(Images.objects.filter(project_id=pk)) == 6:
 					return redirect(f'/{pk}/update_project')
 				Images.objects.create(project=project, images=f)
-			messages.success(request, "A new project was created successfully.")
+			messages.success(request, "The images have been successfully updated.")
 			return redirect(f'/{pk}/update_project')
-
-	for image in images_qset:
-		print("Images are: ", image.images.url)
-   
-
 
 	context = {
 		'project': project_instance,
@@ -153,13 +150,19 @@ def delete_image(request, pk):
 	image = Images.objects.get(id=pk)
 	pid = image.project_id
 	image.delete()
+	messages.info(request, "An image was deleted.")
 	return redirect(f'/{pid}/update_project')
 
 
 def delete_project(request, pk):
 	project = Project.objects.get(id=pk)
 	project.delete()
+	messages.success(request, "The project has been successfully deleted.")
 	return redirect('/projects')
+
+
+
+
 
 # class ProjectUpdateView(UpdateView, pk):
 #     template_name = "home/update_project.html"

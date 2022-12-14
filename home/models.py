@@ -2,7 +2,15 @@ from django.db import models
 from multiselectfield import MultiSelectField
 from ckeditor.fields import RichTextField
 from django.template.defaultfilters import slugify
+from django.contrib.auth.models import AbstractUser
 # Create your models here.
+
+
+class User(AbstractUser):
+	pass
+
+class UserProfile(models.Model):
+	user =  models.OneToOneField(User, on_delete=models.CASCADE)
 
 class Project(models.Model):
 	"""Project model"""
@@ -55,6 +63,8 @@ class Images(models.Model):
     def __str__(self):
     	# return self.project.title
     	return self.images.url
+
+
 
 
 

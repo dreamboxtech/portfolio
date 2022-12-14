@@ -109,6 +109,7 @@ class ImageForm(ProjectForm):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		# self.helper = FormHelper()
+		self.helper.form_tag = True
 		self.helper.layout.extend(
 			 [Row(
 				Column('images', css_class='form-group col-md-6 mb-0 ml-2'),             
