@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-info">
+<!-- <nav class="navbar navbar-expand-lg bg-info">
     <div class="container-fluid">
       <a class="navbar-brand text-light" href="#">Developer Abiola</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,4 +49,81 @@
 <div class="alert alert-warning alert-dismissible fade show mb-0" role="alert">
   <strong>Avalaible for job!</strong> Contact me if you have a job for me.
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
+</div> -->
+
+
+ 
+<nav class="bg-red-100 border-gray-200 dark:bg-gray-900">
+    <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl px-4 md:px-6 py-2.5">
+        <a href="https://flowbite.com" class="flex items-center">
+            <img src="https://flowbite.com/docs/images/logo.svg" class="h-6 mr-3 sm:h-9" alt="Flowbite Logo" />
+            <span class="text-red-400 self-center text-xl font-semibold whitespace-nowrap dark:text-white">Developer's Portal</span>
+        </a>
+        <div class="flex items-center">
+            {% if request.user.is_authenticated %}
+            <span class="mr-2">Welcome {{ request.user.username }}</span>
+                <a href="{% url 'logout' %}" class="mr-6 text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline">Logout</a>
+            {% else %}
+
+              <a href="{% url 'signup' %}" class="mr-6 text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline">Signup</a>
+              <a href="{% url 'login' %}" class="mr-6 text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline">Login</a>
+                
+            {% endif %}
+            
+            
+        </div>
+    </div>
+</nav>
+<nav class="relative bg-red-400 dark:bg-gray-700">
+    <div class="max-w-screen-xl px-4 py-3 mx-auto md:px-6">
+        <div class="flex items-center">
+            <ul class="flex flex-row mt-0 mr-6 space-x-8 text-sm font-medium">
+                
+                 <li>
+                  <a href="{% url 'homer:home' %}" class="text-white hover:text-blue-400 hover:underline" aria-current="page">Home</a>
+                </li>
+                <li>
+                  <a class="text-white hover:underline" href="{% url 'homer:about' %}">About</a>
+              </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle text-white hover:underline" href="{% url 'homer:projects' %}"role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Projects
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'homer:projects' %}">All</a></li>
+                    <li><a class="dropdown-item hover:underline" href="#">Django</a></li>
+                    <li><a class="dropdown-item hover:underline" href="#">Desktop</a></li>
+                    <li><a class="dropdown-item hover:underline" href="#">Laravel</a></li>
+                    <li><a class="dropdown-item hover:underline" href="#">Flask</a></li>
+                    <li><a class="dropdown-item hover:underline" href="#">Data Analysis</a></li>
+                    <li><a class="dropdown-item hover:underline" href="#">Data Science</a></li>
+                    <li><hr class="dropdown-divider hover:underline"></li>
+                    <li><a class="dropdown-item hover:underline" href="#">Others</a></li>
+                  </ul>
+                </li>
+                    <a href="#" class="text-white dark:text-white hover:underline">Team</a>
+                </li>
+                <li class="">
+                    <a class="text-red-400 hover:underline font-bold font-sans bg-white rounded p-1" href="{% url 'homer:reg_project' %}">Submit a Project</a>
+                </li>
+            </ul>
+          
+        </div>
+
+    </div>
+     <!-- Search form -->
+
+            <div class="absolute top-0 right-0 flex justify-center max-w-sm mt-1.5 mr-4">
+                <div class="input-group  flex flex-wrap items-stretch w-full">
+                <input type="search" class="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Search" aria-label="Search" aria-describedby="button-addon2">
+                <button class="btn inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700  focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
+                  <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="w-4" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+          <!-- End of search -->
+   
+</nav>

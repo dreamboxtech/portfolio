@@ -160,13 +160,19 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 
 AUTH_USER_MODEL = 'home.User'
 
+LOGIN_REDIRECT_URL = '/projects'
+LOGIN_URL = '/login'
+
+LOGOUT_REDIRECT_URL = '/projects'
+
+
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 EMAIL_HOST = config('EMAIL_HOST')
-EMAIL_PORT = config('EMAIL_PORT')
+EMAIL_PORT = 465
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('TEST_PASS')
 EMAIL_USE_SSL = config('EMAIL_USE_SSL', cast=bool)
-
+DEFAULT_FROM_EMAIL = "test@dreamboxtech.com"

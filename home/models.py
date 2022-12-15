@@ -3,14 +3,18 @@ from multiselectfield import MultiSelectField
 from ckeditor.fields import RichTextField
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import AbstractUser
+
 # Create your models here.
 
 
 class User(AbstractUser):
-	pass
+	staff_id = models.CharField(max_length=8, verbose_name="Staff ID", blank=True)
 
 class UserProfile(models.Model):
 	user =  models.OneToOneField(User, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return self.user.username
 
 class Project(models.Model):
 	"""Project model"""

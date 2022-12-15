@@ -3,11 +3,11 @@ from django.forms import ClearableFileInput
 from crispy_forms.layout import Layout, HTML, Row, Column
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
-from .models import Project, Images
-
+from .models import Project, Images, User
+from django.contrib.auth.forms import UserCreationForm, UsernameField
+from django.contrib.auth import get_user_model
 
 # Date modules
-
 from django.contrib.admin.widgets import AdminDateWidget
 from django.forms.fields import DateField
 
@@ -65,39 +65,8 @@ class ProjectForm(forms.ModelForm):
 			Row(
 				Column('category', css_class='overflow-y-scroll max-h-40'),
 			),
-			# Row(
-			# 	Column('images', css_class='col-md-4'),
-			# ),
 			
 )
-
-
-# class ImageForm(forms.ModelForm):
-# 	images = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
-	
-# 	class Meta:
-# 		model = Images
-# 		fields = ('images',)
-
-# 	def __init__(self, *args, **kwargs):
-# 		super().__init__(*args, **kwargs)
-# 		self.helper = FormHelper()
-# 		self.helper.layout = Layout(
-# 			 Row(
-# 				Column('images', css_class='form-group col-md-6 mb-0 ml-2'),             
-# 			),
-# 			 Row(
-# 				Submit('submit', 'Submit', css_class='col-md-5 float-right my-3')
-# 			)
-# 	)
-
-
-
-
-
-
-
-
 
 
 class ImageForm(ProjectForm):
@@ -119,23 +88,13 @@ class ImageForm(ProjectForm):
 			)]
 		)
 
-# class UpdateImageForm(ProjectForm):
-# 	images = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
-	
-# 	class Meta(ProjectForm.Meta):
-# 		fields = ProjectForm.Meta.fields + ('images',)
 
-# 	def __init__(self, *args, **kwargs):
-# 		super().__init__(*args, **kwargs)
-# 		# self.helper = FormHelper()
-# 		self.helper.layout.extend(
-# 			 [Row(
-# 				Column('images', css_class='form-group col-md-6 mb-0 ml-2'),             
-# 			),
-# 			 Row(
-# 				Submit('submit', 'Update', css_class='col-md-5 float-right my-3')
-# 			)]
-# 		)
+class CustomUserCreationForm(UserCreationForm):
+
+	class Meta:
+		model = User
+		fields = ('username', 'email', 'staff_id')
+		field_classes = {'username': UsernameField}
 
 
 	

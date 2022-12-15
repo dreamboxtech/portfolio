@@ -2,12 +2,14 @@ from django.core.mail import send_mail
 from django.shortcuts import render, HttpResponse, redirect, reverse
 from django.forms import modelformset_factory, inlineformset_factory
 from django.contrib import messages
-from django.views.generic import DeleteView, UpdateView
+from django.views.generic import DeleteView, UpdateView, CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 from django.core.paginator import Paginator
-from .forms import ProjectForm, ImageForm #UpdateImageForm
+from .forms import ProjectForm, ImageForm, CustomUserCreationForm
 from .models import Project, Images
-from itertools import chain
+
 
 
 # Create your views here.
@@ -21,16 +23,20 @@ def about(request):
 	# return HttpResponse("Fast forward")
 	return render(request, 'about.html')
 
+# Signup class
+class SignupView(CreateView):
+	template_name = 'registration/signup.html'
+	form_class = CustomUserCreationForm
+
+	def get_success_url(self):
+		return reverse('login')
+
 def projects(request):
 	projects = Project.objects.prefetch_related('images_set').all()
-	# images = Images.objects.all()
 
 	paginator = Paginator(projects, 6) #
 	page_number = request.GET.get('page')
 	page_obj = paginator.get_page(page_number)
-
-	# for project in projects:
-	# 	print(project)
 	
 
 	context = {
@@ -38,6 +44,7 @@ def projects(request):
 		'page_obj': page_obj,
 	}
 	return render(request, 'home/projects.html', context)
+
 
 def project_details(request, pk):
 
@@ -57,7 +64,7 @@ def project_details(request, pk):
 	}
 	return render(request, 'home/project_details.html', context)
 
-
+@login_required
 def register_project(request):
 	project_form = ProjectForm()
 	form = ImageForm()
@@ -84,9 +91,15 @@ def register_project(request):
 							date_ended=date_ended,
 							category=category
 				)
-				
-			for f in files:
-				Images.objects.create(project=project, images=f)
+			send_mail(
+            subject="A Project Created",
+            message="This is to inform you that a new project has just been created.",
+            from_email="test@dreamboxtech.com",
+            recipient_list=["bbbolaleye@gmail.com", "info@dreamboxtech.com"]
+        	)
+			if files:
+				for f in files:
+					Images.objects.create(project=project, images=f)
 			messages.success(request, "A new project has been successfully created.")
 			return redirect('/projects')
 		
@@ -103,7 +116,7 @@ def change_filename(instance, filename):
 	new_fname =  str(uuid.uuid1()) # uuid1 --> uuid + timestamps
 	return f"images/{new_fname}{fpath.suffix}"	
 	
-
+@login_required
 def update_project(request, pk):
 	
 	# image_query = Images.objects.prefetch_related('project').filter(project_id=pk)
@@ -123,9 +136,14 @@ def update_project(request, pk):
 		form = ProjectForm(request.POST, instance=project)
 		if form.is_valid():
 			form.save()
+			send_mail(
+            subject="A Project Updated2",
+            message="This is to inform you that a new project has just been updated.",
+            from_email="test@dreamboxtech.com",
+            recipient_list=["bbbolaleye@gmail.com", "info@dreamboxtech.com"]
+        	)
 			messages.success(request, "The project has been successfully updated.")
 			return redirect(f'/projects/{pk}')
-
 
 		if files:
 			for f in files:
