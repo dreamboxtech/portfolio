@@ -54,13 +54,15 @@ def project_details(request, pk):
 	images = Images.objects.filter(project__id=pk)
 	keywords = project.keywords.split(',')
 	categories = list(project.category)
+	contributors = project.contributors.split(',')
 
 	
 	context = {
 		'project': project,
 		'categories': categories,
 		'images': images,
-		'keywords': keywords
+		'keywords': keywords,
+		'contributors': contributors
 	}
 	return render(request, 'home/project_details.html', context)
 

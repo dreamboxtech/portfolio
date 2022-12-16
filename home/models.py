@@ -3,6 +3,8 @@ from multiselectfield import MultiSelectField
 from ckeditor.fields import RichTextField
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import AbstractUser
+from embed_video.fields import EmbedVideoField
+
 
 # Create your models here.
 
@@ -54,7 +56,7 @@ class Project(models.Model):
 	category = MultiSelectField(choices=CATEGORIES, default='BACKEND',
 							    verbose_name="Project Category")
 	technology = models.CharField(max_length=30, null=True)
-	video = models.URLField(max_length=150, blank=True, verbose_name="Video Link")
+	video = EmbedVideoField(verbose_name="Video Link")
 	contributors = models.CharField(max_length=200, blank=True, verbose_name="Contributors (Comma separated)")
 
 

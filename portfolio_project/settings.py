@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'crispy_tailwind',
     'multiselectfield',
     'ckeditor',
+     'embed_video',
 ]
 
 MIDDLEWARE = [
