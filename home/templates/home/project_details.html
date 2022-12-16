@@ -4,19 +4,23 @@
 {% block 'content' %}
 <div class="container">
 	<a href="{% url 'homer:projects' %}"><button class="btn btn-primary my-2">  Back to Projects</button></a>
+	
+	{% if project.user == request.user %}
+	    
 	<div class="float-right items-center">
 	
-	<a href="{% url 'homer:update_project' project.pk %}"> <button type="button" class="text-gray-900 bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium rounded-lg text-sm px-2 py-1 text-center mr-2 mb-2">Edit Project</button></a>
+		<a href="{% url 'homer:update_project' project.pk %}"> <button type="button" class="text-gray-900 bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium rounded-lg text-sm px-2 py-1 text-center mr-2 mb-2">Edit Project</button></a>
 
-	<a href="{% url 'home:delete_project' project.pk %}"> <button onclick="return confirm('Do you really want to delete this project?')" type="button" class=" mt-4 text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-sm px-2 py-1 text-center mr-2 ml-2 mb-2">Delete Project</button></a>
+		<a href="{% url 'home:delete_project' project.pk %}"> <button onclick="return confirm('Do you really want to delete this project?')" type="button" class=" mt-4 text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-sm px-2 py-1 text-center mr-2 ml-2 mb-2">Delete Project</button></a>
 	</div>
+	{% endif %}
 
 
 </div>
 <hr>
 <div class="container grid grid-cols-2 gap-x-2">
 	<div>
-		<p class="font-bold text-3xl my-2"> {{ project.title }} </p>
+		<p class="font-bold text-2xl my-2"> {{ project.title }} </p>
 
 		<div class="grid-cols-2 gap-1 justify-between">		
 		{% for category in categories %}
@@ -36,6 +40,17 @@
 				
 			{% endfor %}
 		</div>
+		{% if project.video %}
+		    <div class="content-center mx-auto text-center mt-4">
+			Project video: <a href="{{ project.video }}" class="text-blue-500 underline"> {{ project.video }} </a>
+			</div>
+		{% else %}
+		    <div>
+		    	No video
+		    </div>
+		
+		{% endif %}
+		
 	</div>
 	<div class="my-2">
 		

@@ -34,7 +34,8 @@ class ProjectForm(forms.ModelForm):
 				'category',
 				'date_started',
 				'date_ended',
-				# 'images',
+				'video',
+				'contributors',
 			)
 		widgets = {
 	        'date_started': forms.TextInput(attrs={'type': 'date'}),
@@ -63,9 +64,12 @@ class ProjectForm(forms.ModelForm):
 				Column( 'date_ended', css_class='col-md-4')
 			),
 			Row(
-				Column('category', css_class='overflow-y-scroll max-h-40'),
+				Column('category', css_class='overflow-y-scroll max-h-40 mb-2'),
 			),
-			
+			Row(
+				Column( 'video', css_class='col-md-6 ml-3 w-screen-2xl'),
+				Column( 'contributors', css_class='ml-3 w-screen-2xl')
+			),
 )
 
 

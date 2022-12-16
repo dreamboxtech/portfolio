@@ -10,11 +10,11 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
 	staff_id = models.CharField(max_length=8, verbose_name="Staff ID", blank=True)
 
-class UserProfile(models.Model):
-	user =  models.OneToOneField(User, on_delete=models.CASCADE)
+# class UserProfile(models.Model):
+# 	user =  models.OneToOneField(User, on_delete=models.CASCADE)
 
-	def __str__(self):
-		return self.user.username
+# 	def __str__(self):
+# 		return self.user.username
 
 class Project(models.Model):
 	"""Project model"""
@@ -43,6 +43,7 @@ class Project(models.Model):
 
 	]
 
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	title = models.CharField(max_length=50, blank=False)
 	keywords = models.CharField(max_length=100, verbose_name="Tech Stack (Comma Separated)")
 	description = RichTextField(verbose_name="Project Description", config_name='my_basic_config')
@@ -53,6 +54,8 @@ class Project(models.Model):
 	category = MultiSelectField(choices=CATEGORIES, default='BACKEND',
 							    verbose_name="Project Category")
 	technology = models.CharField(max_length=30, null=True)
+	video = models.URLField(max_length=150, blank=True, verbose_name="Video Link")
+	contributors = models.CharField(max_length=200, blank=True, verbose_name="Contributors (Comma separated)")
 
 
 	def __str__(self):

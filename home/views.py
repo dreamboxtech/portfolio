@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .forms import ProjectForm, ImageForm, CustomUserCreationForm
 from .models import Project, Images
+from datetime import datetime
 
 
 
@@ -50,7 +51,6 @@ def project_details(request, pk):
 
 	# project = Project.objects.filter(id=pk)
 	project = Project.objects.get(id=pk)
-
 	images = Images.objects.filter(project__id=pk)
 	keywords = project.keywords.split(',')
 	categories = list(project.category)
@@ -72,8 +72,9 @@ def register_project(request):
 	if request.method == 'POST':
 		form = ImageForm(request.POST or None, request.FILES or None)
 		files = request.FILES.getlist('images')
-		
+		print("Checking User: ", request.user)
 		if form.is_valid():
+
 			title = form.cleaned_data['title']
 			keywords = form.cleaned_data['keywords']
 			description = form.cleaned_data['description']
@@ -81,27 +82,35 @@ def register_project(request):
 			date_started = form.cleaned_data['date_started']
 			date_ended = form.cleaned_data['date_ended']
 			category = 	form.cleaned_data['category']
+			video = form.cleaned_data['video']
+			contributors = form.cleaned_data['contributors']
 			
 			project = Project.objects.create(
+							user=request.user,
 							title=title,
 							keywords=keywords,
 							description=description,
 							stage=stage,
 							date_started=date_started,
 							date_ended=date_ended,
-							category=category
+							category=category,
+							video=video,
+							contributors=contributors
 				)
-			send_mail(
-            subject="A Project Created",
-            message="This is to inform you that a new project has just been created.",
-            from_email="test@dreamboxtech.com",
-            recipient_list=["bbbolaleye@gmail.com", "info@dreamboxtech.com"]
-        	)
+			# send_mail(
+   #          subject=f"{datetime.now()}: a Project Created",
+   #          message="This is to inform you that a new project has just been created.",
+   #          from_email="test@dreamboxtech.com",
+   #          recipient_list=["bbbolaleye@gmail.com", "info@dreamboxtech.com"]
+   #      	)
 			if files:
 				for f in files:
+					if len(Images.objects.filter(project__id=project.id)) == 6:
+						messages.info(request, "Project registered, but images cannot exceed 6")
+						return redirect('/myprojects')
 					Images.objects.create(project=project, images=f)
 			messages.success(request, "A new project has been successfully created.")
-			return redirect('/projects')
+			return redirect('/myprojects')
 		
 	context = {
 
@@ -123,35 +132,40 @@ def update_project(request, pk):
 	# p = Project.objects.prefetch_related('images_set')
 	# m = Images.objects.filter(project_id=pk).values_list('images', flat=True)
 
-	
+
 	project = Project.objects.get(id=pk)
 	project_instance = ProjectForm(instance= project)
 	images_qset = Images.objects.filter(project_id=pk)
 
 	files = request.FILES.getlist('images')
-	
-	
-	if request.method == 'POST':
+	print("Results: ", project.user, request.user)
+	if project.user == request.user:
+		if request.method == 'POST':
 
-		form = ProjectForm(request.POST, instance=project)
-		if form.is_valid():
-			form.save()
-			send_mail(
-            subject="A Project Updated2",
-            message="This is to inform you that a new project has just been updated.",
-            from_email="test@dreamboxtech.com",
-            recipient_list=["bbbolaleye@gmail.com", "info@dreamboxtech.com"]
-        	)
-			messages.success(request, "The project has been successfully updated.")
-			return redirect(f'/projects/{pk}')
+			form = ProjectForm(request.POST, instance=project)
+			if form.is_valid():
+				form.save()
+				# send_mail(
+	   #          subject="A Project Updated2",
+	   #          message="This is to inform you that a new project has just been updated.",
+	   #          from_email="test@dreamboxtech.com",
+	   #          recipient_list=["bbbolaleye@gmail.com", "info@dreamboxtech.com"]
+	   #      	)
+				messages.success(request, "The project has been successfully updated.")
+				# return redirect(f'/projects/{pk}')
+				return redirect(reverse('home:project_details', kwargs={'pk':pk}))
 
-		if files:
-			for f in files:
-				if len(Images.objects.filter(project_id=pk)) == 6:
-					return redirect(f'/{pk}/update_project')
-				Images.objects.create(project=project, images=f)
-			messages.success(request, "The images have been successfully updated.")
-			return redirect(f'/{pk}/update_project')
+			if files:
+				for f in files:
+					if len(Images.objects.filter(project_id=pk)) == 6:
+						messages.info(request, "Images cannot be more than 6")
+						return redirect(f'/projects/{pk}/update_project')
+					Images.objects.create(project=project, images=f)
+				messages.success(request, "The images have been successfully updated.")
+				return redirect(reverse('home:update_project', kwargs={'pk': pk}))
+	else:
+		messages.warning(request, "You do not have the permission to do that")
+		return redirect('/myprojects')
 
 	context = {
 		'project': project_instance,
@@ -169,7 +183,7 @@ def delete_image(request, pk):
 	pid = image.project_id
 	image.delete()
 	messages.info(request, "An image was deleted.")
-	return redirect(f'/{pid}/update_project')
+	return redirect(f'/projects/{pid}/update_project')
 
 
 def delete_project(request, pk):
@@ -179,6 +193,22 @@ def delete_project(request, pk):
 	return redirect('/projects')
 
 
+# Personalized project view
+@login_required
+def my_projects(request):
+
+	projects = Project.objects.filter(user=request.user)
+
+	paginator = Paginator(projects, 6) #
+	page_number = request.GET.get('page')
+	page_object = paginator.get_page(page_number)
+
+	context = {
+		'projects': projects,
+		'page_object': page_object
+	}
+
+	return render(request, "home/myprojects.html", context)
 
 
 

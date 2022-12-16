@@ -6,10 +6,10 @@
 <!-- {% if forloop.counter0 <= 2 %} -->
 <!-- {% endif %} -->
 
-<h2 class="text-center mt-3 font-bold">Project List</h2>
+<h2 class="text-center mt-3 font-bold">Submitted Projects</h2>
 <div class="container">
     <div class="row row-cols-1 row-cols-md-3">
-    {% for project in page_obj %}
+    {% for project in page_object %}
         <div class="col">
             <div class="card my-2">
             <img src="{{ project.images_set.first }}" class="card-img-top">
@@ -19,31 +19,38 @@
                 </p>
                 <br>
                 <a href="{% url 'homer:project_details' project.pk %}" class="btn btn-primary">See projects details</a>
-                <span class="ml-10"> Project by: <a href="#" class="text-blue-400 bg-red-100 rounded p-0.5 pb-1 p-x-1 underline font-bold"> @{{ project.user }} </a></span>
               </div>
             </div>
         </div>
     {% endfor %}
     </div>                 
 </div>
-
+{% if projects %}
 <div class="container pagination my-5 place-content-center">
     <span class="step-links">
-        {% if page_obj.has_previous %}
+        {% if page_object.has_previous %}
             <a href="?page=1"> <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mx-5"> &laquo; First </button></a>
-            <a href="?page={{ page_obj.previous_page_number }}"> <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mx-5"> Previous </button></a>
+            <a href="?page={{ page_object.previous_page_number }}"> <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mx-5"> Previous </button></a>
         {% endif %}
 
         <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            Page {{ page_object.number }} of {{ page_object.paginator.num_pages }}.
         </span>
 
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}"> <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mx-5"> Next </button></a>
-            <a href="?page={{ page_obj.paginator.num_pages }}"> <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mx-5"> Last &raquo; </button></a>
+        {% if page_object.has_next %}
+            <a href="?page={{ page_object.next_page_number }}"> <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mx-5"> Next </button></a>
+            <a href="?page={{ page_object.paginator.num_pages }}"> <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mx-5"> Last &raquo; </button></a>
         {% endif %}
     </span>
 </div>
 
+{% else %}
+<div class="mx-auto text-center">
+    
+    <h3 class="mt-10 text-2xl text-red-400 font-bold">You have not submitted any projects yet</h3>
+</div>
+
+{% endif %}
 {% endblock 'content' %}
+
 
