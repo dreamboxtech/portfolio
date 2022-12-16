@@ -4,6 +4,7 @@ from ckeditor.fields import RichTextField
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import AbstractUser
 from embed_video.fields import EmbedVideoField
+from django_countries.fields import CountryField
 
 
 # Create your models here.
@@ -12,11 +13,50 @@ from embed_video.fields import EmbedVideoField
 class User(AbstractUser):
 	staff_id = models.CharField(max_length=8, verbose_name="Staff ID", blank=True)
 
-# class UserProfile(models.Model):
-# 	user =  models.OneToOneField(User, on_delete=models.CASCADE)
+class UserProfile(models.Model):
 
-# 	def __str__(self):
-# 		return self.user.username
+	EDUCATION_LIST = (
+		("High School", "High School"),
+		("Diploma", "Diploma"),
+		("Associate", "Associate"),
+		("Bachelors", "Bachelors"),
+		("Masters", "Masters"),
+		("PhD", "PhD"),
+		("Others", "Others"),
+		("None", "None"),
+		)
+	user =  models.OneToOneField(User, on_delete=models.CASCADE)
+	education = models.CharField(choices=EDUCATION_LIST,verbose_name="Education")
+	gender = models.CharField(choices=(('M','M'),('F','F')), verbose_name='Gender')
+	picture = models.ImageField(upload_to='profile_pictures/', blank=True, verbose_name="Profile Picture")
+	country = CountryField(blank_label='(select country)')
+	about = models.CharField(max_length=500, blank=True, verbose_name="About Me")
+
+	def __str__(self):
+		return self.user.username
+
+class Course(models.Model):
+	user =  models.ForeignKey(User, on_delete=models.CASCADE)
+	name = models.CharField(max_length=100, blank=True, verbose_name="Course Studied")
+	school=models.CharField(max_length=150, blank=True, verbose_name="Institution")
+	year = models.DateField(blank=True, verbose_name="Year of Graduation")
+
+class Work(models.Model):
+	user =  models.ForeignKey(User, on_delete=models.CASCADE)
+	role = models.CharField(max_length=50, verbose_name="Job Title")
+	organization = models.CharField(max_length=200, verbose_name="Oranization")
+	specific_duties = RichTextField(verbose_name="Specific Duties", config_name='my_basic_config')
+	work_started = DateField(blank=True, verbose_name="Dated Started")
+	work_ended = DateField(blank=True, verbose_name="Date Ended")
+
+class Publications(models.Model):
+	user =  models.ForeignKey(User, on_delete=models.CASCADE)
+	title = models.CharField(max_length=150, blank=True, verbose_name="Publication Title")
+	date = models.DateField(blank=True, verbose_name="Publication Date")
+	link = models.URLField(max_length=200, blank=True, verbose_name="Publication Link")
+
+
+
 
 class Project(models.Model):
 	"""Project model"""

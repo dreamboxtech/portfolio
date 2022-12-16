@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'multiselectfield',
     'ckeditor',
      'embed_video',
+     'django_countries',
 ]
 
 MIDDLEWARE = [
