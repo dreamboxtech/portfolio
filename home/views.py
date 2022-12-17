@@ -3,6 +3,7 @@ from django.shortcuts import render, HttpResponse, redirect, reverse
 from django.forms import modelformset_factory, inlineformset_factory
 from django.contrib import messages
 from django.views.generic import DeleteView, UpdateView, CreateView
+from django.contrib.auth.views import LoginView 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 
@@ -29,8 +30,27 @@ class SignupView(CreateView):
 	template_name = 'registration/signup.html'
 	form_class = CustomUserCreationForm
 
+	def get(self, request, *args, **kwargs):
+		# if Application.objects.filter(user=self.request.user).exists():
+		if request.user.is_authenticated:
+			return redirect('/projects') # ideally you'd use the url name here instead.
+		return super().get(request, *args, **kwargs)
+
 	def get_success_url(self):
 		return reverse('login')
+
+class Login(LoginView):
+	template_name = 'registration/login.html'
+	# form_class = CustomUserCreationForm
+
+	def get(self, request, *args, **kwargs):
+		# if Application.objects.filter(user=self.request.user).exists():
+		if request.user.is_authenticated:
+			return redirect('/projects') # ideally you'd use the url name here instead.
+		return super().get(request, *args, **kwargs)
+
+	def get_success_url(self):
+		return reverse('home:projects')
 
 def projects(request):
 	projects = Project.objects.prefetch_related('images_set').all()
