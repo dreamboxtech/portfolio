@@ -5,7 +5,7 @@ from django.template.defaultfilters import slugify
 from django.contrib.auth.models import AbstractUser
 from embed_video.fields import EmbedVideoField
 from django_countries.fields import CountryField
-
+from datetime import datetime, date
 
 # Create your models here.
 
@@ -14,7 +14,7 @@ class User(AbstractUser):
 	staff_id = models.CharField(max_length=8, verbose_name="Staff ID", blank=True)
 	first_name = models.CharField(max_length=20, verbose_name="First Name")
 	last_name = models.CharField(max_length=20, verbose_name="Last Name")
-	dob = models.DateField(blank=True)
+	dob = models.DateField(blank=True, default=date.today, verbose_name="Date of Birth")
 
 
 class UserProfile(models.Model):

@@ -146,15 +146,18 @@ CKEDITOR_CONFIGS = {
 # https://github.com/django-ckeditor/django-ckeditor#optional-customizing-ckeditor-editor
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+    )
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') #req for deployment
+
+
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-    )
 
 CRISPY_TEMPLATE_PACK = 'tailwind'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
