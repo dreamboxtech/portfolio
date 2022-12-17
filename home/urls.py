@@ -4,7 +4,7 @@ from .views import (
         projects, register_project,
         project_details, update_project,
         delete_image, delete_project,
-        my_projects
+        my_projects, Profile
     )
 
 
@@ -21,6 +21,7 @@ urlpatterns = [
     path('projects/<int:pk>/update_project', update_project, name='update_project'),
     path('projects/<int:pk>/delete_image', delete_image, name='delete_image'),
     path('projects/<int:pk>/delete_project', delete_project, name='delete_project'),
+    path('profile', Profile, name='profile'),
 
     path('myprojects', my_projects, name='myprojects'),
 ]

@@ -2,7 +2,7 @@ from django.core.mail import send_mail
 from django.shortcuts import render, HttpResponse, redirect, reverse
 from django.forms import modelformset_factory, inlineformset_factory
 from django.contrib import messages
-from django.views.generic import DeleteView, UpdateView, CreateView
+from django.views.generic import DeleteView, UpdateView, CreateView, DetailView
 from django.contrib.auth.views import LoginView 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
@@ -24,6 +24,21 @@ def contact(request):
 def about(request):
 	# return HttpResponse("Fast forward")
 	return render(request, 'about.html')
+
+# Profile
+
+# class Profile(DetailView):
+# 	template_name = 'home/profile.html'
+
+def Profile(request):
+	return render(request, 'home/profile.html')
+
+
+
+
+
+
+
 
 # Signup class
 class SignupView(CreateView):
