@@ -6,6 +6,8 @@ from django.contrib.auth.models import AbstractUser
 from embed_video.fields import EmbedVideoField
 from django_countries.fields import CountryField
 from datetime import datetime, date
+from autoslug import AutoSlugField
+from phonenumber_field.modelfields import PhoneNumberField
 
 # Create your models here.
 
@@ -13,6 +15,7 @@ from datetime import datetime, date
 class User(AbstractUser):
 	staff_id = models.CharField(max_length=8, verbose_name="Staff ID", blank=True)
 	first_name = models.CharField(max_length=20, verbose_name="First Name")
+	# middle_name = models.CharField(max_length=20, verbose_name="Middle Name")
 	last_name = models.CharField(max_length=20, verbose_name="Last Name")
 	dob = models.DateField(blank=True, default=date.today, verbose_name="Date of Birth")
 
@@ -22,9 +25,12 @@ class UserProfile(models.Model):
 	gender = models.CharField(max_length=1, choices=(('M','M'),('F','F')), verbose_name='Gender')
 	picture = models.ImageField(upload_to='profile_pictures/', blank=True, verbose_name="Profile Picture")
 	country = CountryField(blank_label='(select country)')
-	about = RichTextField(max_length=500, blank=True, verbose_name="About Me", default="None")
+	about = RichTextField(max_length=500, blank=True, verbose_name="About Me", default="None", config_name='my_basic_config')
 	address = models.CharField(max_length=150, blank=True, verbose_name="Address", default="None")
 	title = models.CharField(max_length=100, verbose_name="Job title", help_text="Data Engineer")
+	phone = PhoneNumberField(null=False, blank=False, unique=True)
+	# job_title = models.CharField(max_length=100, verbose_name="Job title", help_text="Data Engineer")
+	# experience_years = models.IntegerField(max_length=2, verbose_name="Years of Experience")
 
 	def __str__(self):
 		return self.user.username
@@ -100,6 +106,7 @@ class Project(models.Model):
 
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	title = models.CharField(max_length=50, blank=False)
+	# slug = AutoSlugField(max_length=200, populate_from='title', unique_with='id')
 	keywords = models.CharField(max_length=100, verbose_name="Tech Stack (Comma Separated)")
 	description = RichTextField(verbose_name="Project Description", config_name='my_basic_config')
 	stage = models.CharField(choices=STAGES, max_length=20)

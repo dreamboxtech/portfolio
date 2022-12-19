@@ -8,8 +8,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 
 from django.core.paginator import Paginator
-from .forms import ProjectForm, ImageForm, CustomUserCreationForm
-from .models import Project, Images
+from .forms import ProjectForm, ImageForm, CustomUserCreationForm, ProfileForm
+from .models import Project, Images, User, UserProfile
 from datetime import datetime
 
 
@@ -27,15 +27,21 @@ def about(request):
 
 # Profile
 
-# class Profile(DetailView):
-# 	template_name = 'home/profile.html'
+class Profile(CreateView):
+	model = UserProfile
+	form_class = ProfileForm
+	template_name = 'home/profile.html'
+	# fields = ['user', 'gender',]
+	
 
-def Profile(request):
-	return render(request, 'home/profile.html')
 
-
-
-
+# def Profile(request):
+# 	user = User.objects.get(id=request.user.id)
+	
+# 	context = {
+# 		'user': user
+# 	}
+# 	return render(request, 'home/complete_profile.html', context)
 
 
 

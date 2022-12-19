@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'ckeditor',
      'embed_video',
      'django_countries',
+     "phonenumber_field",
 ]
 
 MIDDLEWARE = [
@@ -140,6 +141,9 @@ CKEDITOR_CONFIGS = {
     },
 
     'another_config': {
+        'toolbar': 'Basic'
+    },
+    'default': {
         'toolbar': 'Basic'
     }
 }

@@ -3,13 +3,32 @@ from django.forms import ClearableFileInput
 from crispy_forms.layout import Layout, HTML, Row, Column
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
-from .models import Project, Images, User
+from .models import Project, Images, User, UserProfile
 from django.contrib.auth.forms import UserCreationForm, UsernameField
 from django.contrib.auth import get_user_model
-
+from datetime import datetime
+from phonenumber_field.widgets import PhoneNumberPrefixWidget
 # Date modules
 from django.contrib.admin.widgets import AdminDateWidget
 from django.forms.fields import DateField
+
+
+# class Meta:
+#     widgets = {                          # Here
+#         'phone': PhoneNumberPrefixWidget(initial='US'),
+#     }
+
+
+
+
+class ProfileForm(forms.ModelForm):
+
+	class Meta:
+		model = UserProfile
+		fields = '__all__'
+
+
+
 
 
 class ProjectForm(forms.ModelForm):
@@ -39,7 +58,7 @@ class ProjectForm(forms.ModelForm):
 			)
 		widgets = {
 	        'date_started': forms.TextInput(attrs={'type': 'date'}),
-	        'date_ended': forms.TextInput(attrs={'type': 'date'}),
+	        'date_ended': forms.TextInput(attrs={'type': 'date', 'max': datetime.now()}),
 	        'images': ClearableFileInput(attrs={'multiple': True}),
     }
 	def __init__(self, *args, **kwargs):
