@@ -15,22 +15,23 @@ from phonenumber_field.modelfields import PhoneNumberField
 class User(AbstractUser):
 	staff_id = models.CharField(max_length=8, verbose_name="Staff ID", blank=True)
 	first_name = models.CharField(max_length=20, verbose_name="First Name")
-	# middle_name = models.CharField(max_length=20, verbose_name="Middle Name")
+	middle_name = models.CharField(max_length=20, verbose_name="Middle Name")
 	last_name = models.CharField(max_length=20, verbose_name="Last Name")
 	dob = models.DateField(blank=True, default=date.today, verbose_name="Date of Birth")
 
 
 class UserProfile(models.Model):
+	
 	user =  models.OneToOneField(User, on_delete=models.CASCADE)
 	gender = models.CharField(max_length=1, choices=(('M','M'),('F','F')), verbose_name='Gender')
-	picture = models.ImageField(upload_to='profile_pictures/', blank=True, verbose_name="Profile Picture")
+	photo = models.ImageField(upload_to='profile_pictures/', blank=True, verbose_name="Profile Picture")
+	cover_photo = models.ImageField(upload_to='profile_pictures/', blank=True, verbose_name="Profile Picture")
 	country = CountryField(blank_label='(select country)')
-	about = RichTextField(max_length=500, blank=True, verbose_name="About Me", default="None", config_name='my_basic_config')
+	about = RichTextField(max_length=500, verbose_name="About Me", config_name='another_config')
 	address = models.CharField(max_length=150, blank=True, verbose_name="Address", default="None")
-	title = models.CharField(max_length=100, verbose_name="Job title", help_text="Data Engineer")
 	phone = PhoneNumberField(null=False, blank=False, unique=True)
-	# job_title = models.CharField(max_length=100, verbose_name="Job title", help_text="Data Engineer")
-	# experience_years = models.IntegerField(max_length=2, verbose_name="Years of Experience")
+	job_title = models.CharField(max_length=100, verbose_name="Job title", help_text="Data Engineer")
+	experience_years = models.IntegerField(max_length=2, verbose_name="Years of Experience")
 
 	def __str__(self):
 		return self.user.username
@@ -80,13 +81,13 @@ class Publications(models.Model):
 class Project(models.Model):
 	"""Project model"""
 
-	STAGES = [
+	STAGES = (
     ('STD', 'STARTED'),
     ('CMPT', 'COMPLETED'),
     ('ONG', 'ONGOING'),
-	]
+	)
 
-	CATEGORIES = [
+	CATEGORIES = (
 		('MACHINE LEARNING', 'MACHINE LEARNING'),
 		('DATA SCIENCE', 'DATA SCIENCE'),
 		('DATA ANALYTICS/ANALYSIS', 'DATA ANALYTICS/ANALYSIS'),
@@ -102,19 +103,19 @@ class Project(models.Model):
 		('SOFTWARE DEVELOPMENT', 'SOFTWARE DEVELOPMENT'),
 		('GAME DEVELOPMENT', 'GAME DEVELOPMENT')
 
-	]
+	)
 
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	title = models.CharField(max_length=50, blank=False)
-	# slug = AutoSlugField(max_length=200, populate_from='title', unique_with='id')
+	slug = AutoSlugField(max_length=200, populate_from='title', unique_with='id')
 	keywords = models.CharField(max_length=100, verbose_name="Tech Stack (Comma Separated)")
 	description = RichTextField(verbose_name="Project Description", config_name='my_basic_config')
 	stage = models.CharField(choices=STAGES, max_length=20)
 	date_started = models.DateField()
 	date_ended = models.DateField()
 	
-	category = MultiSelectField(choices=CATEGORIES, default='BACKEND',
-							    verbose_name="Project Category")
+	category = MultiSelectField(choices=CATEGORIES, verbose_name="Project Category", 
+		max_length=100)
 	technology = models.CharField(max_length=30, null=True)
 	video = EmbedVideoField(verbose_name="Video Link", blank=True)
 	contributors = models.CharField(max_length=200, blank=True, verbose_name="Contributors (Comma separated)")

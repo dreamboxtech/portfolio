@@ -132,7 +132,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 # handler404 = 'home.views.handler404'
-
+# CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
 CKEDITOR_CONFIGS = {
     'my_basic_config': {
          'height': 100,
@@ -141,11 +141,24 @@ CKEDITOR_CONFIGS = {
     },
 
     'another_config': {
-        'toolbar': 'Basic'
+        'height': 120,
+        'width': 822,
+        # 'toolbar': 'full',
     },
     'default': {
-        'toolbar': 'Basic'
-    }
+       'toolbar_Full': [
+            ['Styles', 'Format', 'Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker', 'Undo', 'Redo'],
+            ['Link', 'Unlink', 'Anchor'],
+            ['Image', 'Flash', 'Table', 'HorizontalRule'],
+            ['TextColor', 'BGColor'],
+            ['Smiley', 'SpecialChar'], ['Source'],
+            ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+            ['NumberedList','BulletedList'],
+            ['Indent','Outdent'],
+            ['Maximize'],
+        ],
+        'extraPlugins': 'justify,liststyle,indent',
+   },
 }
 # https://github.com/django-ckeditor/django-ckeditor#optional-customizing-ckeditor-editor
 
