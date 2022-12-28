@@ -28,10 +28,10 @@ class UserProfile(models.Model):
 	cover_photo = models.ImageField(upload_to='profile_pictures/', blank=True, verbose_name="Profile Picture")
 	country = CountryField(blank_label='(select country)')
 	about = RichTextField(max_length=500, verbose_name="About Me", config_name='another_config')
-	address = models.CharField(max_length=150, blank=True, verbose_name="Address", default="None")
+	address = models.CharField(max_length=150, blank=True, verbose_name="Address")
 	phone = PhoneNumberField(null=False, blank=False, unique=True)
-	job_title = models.CharField(max_length=100, verbose_name="Job title", help_text="Data Engineer")
-	experience_years = models.IntegerField(max_length=2, verbose_name="Years of Experience")
+	job_title = models.CharField(max_length=100, verbose_name="Job title", help_text="e.g. Data Engineer")
+	experience_years = models.IntegerField(verbose_name="Years of Experience")
 
 	def __str__(self):
 		return self.user.username
@@ -108,7 +108,7 @@ class Project(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	title = models.CharField(max_length=50, blank=False)
 	slug = AutoSlugField(max_length=200, populate_from='title', unique_with='id')
-	keywords = models.CharField(max_length=100, verbose_name="Tech Stack (Comma Separated)")
+	keywords = models.CharField(max_length=100, verbose_name="Tech Stack")
 	description = RichTextField(verbose_name="Project Description", config_name='my_basic_config')
 	stage = models.CharField(choices=STAGES, max_length=20)
 	date_started = models.DateField()
@@ -118,7 +118,7 @@ class Project(models.Model):
 		max_length=100)
 	technology = models.CharField(max_length=30, null=True)
 	video = EmbedVideoField(verbose_name="Video Link", blank=True)
-	contributors = models.CharField(max_length=200, blank=True, verbose_name="Contributors (Comma separated)")
+	contributors = models.CharField(max_length=200, blank=True, verbose_name="Contributors")
 
 
 	def __str__(self):

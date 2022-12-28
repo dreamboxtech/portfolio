@@ -27,21 +27,52 @@ def about(request):
 
 # Profile
 
-class Profile(CreateView):
-	model = UserProfile
-	form_class = ProfileForm
-	template_name = 'home/profile.html'
-	# fields = ['user', 'gender',]
-	
+# class Profile(CreateView):
+# 	model = UserProfile
+# 	form_class = ProfileForm
+# 	template_name = 'home/profile.html'
+# 	# fields = '__all__'
+# 	success_url = '/home/projects/'
 
+# 	def get(self, request, *args, **kwargs):
+# 		user = User.objects.get(id=request.user.id)
+# 		return super().get(request, *args, **kwargs)
 
-# def Profile(request):
-# 	user = User.objects.get(id=request.user.id)
+# 	def form_valid(self, form):
+# 		form.user = User.objects.get(id=request.user.id)
+# 		return super(Profile, self).form_valid(form) 
+
+	# def get_success_url(self):
+	# 	return reverse('homer:profile')
 	
-# 	context = {
-# 		'user': user
-# 	}
-# 	return render(request, 'home/complete_profile.html', context)
+from django.contrib.auth import get_user_model, get_user
+def Profile(request):
+	user = User.objects.get(id=request.user.id)
+	profile = UserProfile.objects.filter(user__id=request.user.id)
+	form = ProfileForm()
+	# user = request.user.username
+
+	print("Photo test: ", profile.first().photo, user)
+	
+	if request.method == 'POST':
+		form = ProfileForm(request.POST or None, request.FILES or None)
+		form.user = request.user.username
+		# files = request.FILES.getlist('images')
+		
+		if form.is_valid():
+			form.save()
+			print("**************Yes valid form")
+			return redirect('/myprojects')
+		else:
+			print("Form error: ", form.errors)
+			
+	
+	context = {
+		'user': user,
+		'form': form,
+		'profile': profile
+	}
+	return render(request, 'home/profile.html', context)
 
 
 

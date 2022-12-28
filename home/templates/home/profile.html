@@ -18,7 +18,7 @@
 </script>
 
 
-<div class="mx-auto">
+<div class="ml-4 -mr-1 my-5">
   <div class="md:grid md:grid-cols-3 md:gap-6">
     <div class="md:col-span-1 mt-5">
       <div class="px-4 sm:px-0">
@@ -27,8 +27,9 @@
       </div>
     </div>
     <div class="mt-5 md:col-span-2 md:mt-0 mr-5">
-      <form method="POST" enctype="multipart/form-data">
+      <form method="post" enctype="multipart/form-data">
       	{% csrf_token %}
+         {{ form.user }}
         <div class="shadow sm:overflow-hidden sm:rounded-md">
           <div class="space-y-6 bg-white px-4 py-5 sm:p-6">
           		<!-- Image -->
@@ -36,12 +37,16 @@
               <label class="block text-sm font-medium text-gray-700">Photo</label>
               <div class="mt-1 flex items-center">
               	<div >
+                  {% if profile.first.photo %}
+                      
+                  <img alt="..." src="{{ profile.first.photo.url }}" class="overflow-hidden rounded-full bg-gray-100" style="width: 150px; height:150px !important;">
+                  
+                  {% else %}
+                      
                 	<img alt="..." src="{% static 'images/profile/avatar.png' %}" class="overflow-hidden rounded-full bg-gray-100" style="width: 150px; height:130px !important;">
+                  {% endif %}
               	</div>
-                <!-- </span> -->
-                <!-- {{ form.photo|as_crispy_field }} -->
-                 <!-- <input type="button" id="loadFileXml" value="Change" onclick="document.getElementById('photo').click();" class="ml-5 rounded-md border border-gray-300 bg-white py-2 px-3 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"/>
-                <input type="file" id="photo" name="photo" class="ml-5 rounded-md border border-gray-300 bg-white py-2 px-3 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" style="display: none;" /> -->
+                
               <span class="ml-5 rounded-md border border-gray-300 bg-white py-2 px-3 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                 <label for="file-upload" class="custom-file-upload">
                       <i class="fa fa-cloud-upload"></i> Upload Image
@@ -64,7 +69,7 @@
                      <label for="cover-upload" class="cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500 mr-3">
                       <i></i> Upload Cover
                     </label>
-                    <input id="cover-upload" name='cover' type="file" style="display:none;" accept="image/*">
+                    <input id="cover-upload" name='cover_photo' type="file" style="display:none;" accept="image/*">
                     <label id="file-name"></label>
                   </div>
                   <p class="text-xs text-gray-500">PNG and JPG files</p>
@@ -74,33 +79,58 @@
 
             <!-- About Section -->
 
-            <div>
-              <div class="mt-1">
-                <span class="mt-2 text-sm text-gray-500">Detailed description about your experience.
+              <div class="mt-2">
+                
                 {{ form.media }}
                 {{ form.about|as_crispy_field }} 
-                </span>
+                <span class="mt-2 text-sm text-gray-500">Detailed description about your experience.</span>
               </div>
-              
+
+                <!-- country, state, zip -->
+        <div class="overflow-hidden shadow sm:rounded-md">
+            <div class="bg-white px-4 py-5 sm:p-6">
+            
+            <div class="grid grid-cols-6 gap-6">
+          
+              <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                
+                {{ form.job_title|as_crispy_field }}
+              </div>
+
+              <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+
+               {{ form.experience_years|as_crispy_field }} 
+              </div>
+
+              <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                {{ form.country|as_crispy_field }}
+              </div>
             </div>
 
+            <!-- Phone and experience -->
+            <div class="grid grid-cols-6 gap-6">
+          
+              <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                
+                {{ form.gender|as_crispy_field }}
+              </div>
 
+              <div class="col-span-6 sm:col-span-6 lg:col-span-4">
 
-            <div class="grid grid-cols-3 gap-6">
-              <div class="col-span-3 sm:col-span-2">
-                <label for="company-website" class="block text-sm font-medium text-black-700">Website</label>
-                <div class="mt-1 flex rounded-md shadow-sm">
-                  <span class="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">http://</span>
-                  <input type="text" name="company-website" id="company-website" class="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="www.example.com">
-                </div>
+               {{ form.phone|as_crispy_field }} 
+              </div>
+
+              <div class="col-span-6 sm:col-span-6 lg:col-span-6">
+                {{ form.address|as_crispy_field }}
               </div>
             </div>
+          
 
+          </div>
+        </div>
             
 
-            
-
-           
+                   
           </div>
           <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
             <button type="submit" class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Save</button>
@@ -110,6 +140,11 @@
     </div>
   </div>
 </div>
+
+<!-- End of form one -->
+
+
+
 
 <div class="hidden sm:block" aria-hidden="true">
   <div class="py-5">
@@ -121,7 +156,7 @@
   <div class="md:grid md:grid-cols-3 md:gap-6">
     <div class="md:col-span-1">
       <div class="px-4 sm:px-0">
-        <h3 class="text-lg font-medium leading-6 text-gray-900">Personal Information</h3>
+        <h3 class="text-lg font-medium leading-6 text-gray-900">Account Information</h3>
         <p class="mt-1 text-sm text-gray-600">Use a permanent address where you can receive mail.</p>
       </div>
     </div>

@@ -135,14 +135,14 @@ USE_TZ = True
 # CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
 CKEDITOR_CONFIGS = {
     'my_basic_config': {
-         'height': 100,
-         'width': 500,
+         'width': '100%',
+        'height': '50vh'
           # 'toolbar': 'Basic',
     },
 
     'another_config': {
-        'height': 120,
-        'width': 822,
+        'width': '100%',
+        'height': '50vh'
         # 'toolbar': 'full',
     },
     'default': {
