@@ -30,12 +30,12 @@ class ProfileForm(forms.ModelForm):
 	# 	self.user = user
 	# 	super(ProfileForm, self).__init__(*args, **kwargs)
 	
-
+	# user = form.CharField(initial=get_user_model())
 	class Meta:
 		model = UserProfile
 		
-		fields = '__all__'
-		# exclude = ('user',)
+		# fields = '__all__'
+		exclude = ('user',)
 
 		widgets = {
 			'address': forms.TextInput(attrs={'class': 'col-md-4 w-19'})

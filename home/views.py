@@ -27,52 +27,75 @@ def about(request):
 
 # Profile
 
-# class Profile(CreateView):
-# 	model = UserProfile
-# 	form_class = ProfileForm
-# 	template_name = 'home/profile.html'
-# 	# fields = '__all__'
-# 	success_url = '/home/projects/'
+class ProfileView(CreateView):
+	model = UserProfile
+	form_class = ProfileForm
+	template_name = 'home/profile.html'
+	success_url = '/profile'
+	# extra_context={'users': YourModel.objects.all()} #Alternative approach to set context data
 
-# 	def get(self, request, *args, **kwargs):
-# 		user = User.objects.get(id=request.user.id)
-# 		return super().get(request, *args, **kwargs)
 
-# 	def form_valid(self, form):
-# 		form.user = User.objects.get(id=request.user.id)
-# 		return super(Profile, self).form_valid(form) 
+	def get_form_kwargs(self):
+		"""
+		Add to form data, set user before form save
+		"""
+		kwargs = super(Profile, self).get_form_kwargs()
+		if kwargs['instance'] is None:
+			kwargs['instance'] = UserProfile()
+		kwargs['instance'].user = self.request.user
+		return kwargs
+
+	def get_context_data(self):
+		"""
+			Set context data with this method
+		"""
+		context = super(Profile, self).get_context_data()
+		context['profile'] = UserProfile.objects.filter(user__id=self.request.user.id)
+		return context
+
+
+	# Use this method to overide, validate and save form
+	# def form_valid(self, form):
+		"""
+		control form before save
+		"""
+	#     obj = form.save(commit=False)
+	#     obj.user = self.request.user
+	#     return super(PlaceFormView, self).form_valid(form)
+		
 
 	# def get_success_url(self):
 	# 	return reverse('homer:profile')
 	
-from django.contrib.auth import get_user_model, get_user
-def Profile(request):
-	user = User.objects.get(id=request.user.id)
-	profile = UserProfile.objects.filter(user__id=request.user.id)
-	form = ProfileForm()
-	# user = request.user.username
 
-	print("Photo test: ", profile.first().photo, user)
+# def Profile(request):
+	"""
+		Use method-based view for profile
+	"""
+# 	user = User.objects.get(id=request.user.id)
+# 	profile = UserProfile.objects.filter(user__id=request.user.id)
+# 	form = ProfileForm()
 	
-	if request.method == 'POST':
-		form = ProfileForm(request.POST or None, request.FILES or None)
-		form.user = request.user.username
-		# files = request.FILES.getlist('images')
+# 	print()
+
+	
+# 	if request.method == 'POST':
+# 		form = ProfileForm(request.POST or None, request.FILES or None)
 		
-		if form.is_valid():
-			form.save()
-			print("**************Yes valid form")
-			return redirect('/myprojects')
-		else:
-			print("Form error: ", form.errors)
+# 		if form.is_valid():
+# 			profile = form.save(commit=False)
+# 			profile.user = user
+# 			profile.save()
+# 			return redirect('/myprojects')
+# 		else:
+# 			print("Form error: ", form.errors)
 			
-	
-	context = {
-		'user': user,
-		'form': form,
-		'profile': profile
-	}
-	return render(request, 'home/profile.html', context)
+# 	context = {
+# 		'user': user,
+# 		'form': form,
+# 		'profile': profile
+# 	}
+# 	return render(request, 'home/profile.html', context)
 
 
 
