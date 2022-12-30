@@ -21,21 +21,22 @@
 <!-- 2  -->
 
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
- <nav class="relative w-full px-5 flex justify-between items-center h-14 bg-red-500 drop-shadow-md">
+ 
+ <nav class="z-10 relative w-full px-5 flex justify-between items-center h-14 bg-red-500 drop-shadow-md">
     <!-- Logo -->
     <div>
         <a href="#" class="text-white text-2xl font-semibold italic">
-            DO<span class="text-amber-500">CODE</span>
+            DE<span class="text-amber-500">CODED</span>
         </a>
     </div>
 
     <!-- This div and its children show up when screen's width >= 769px (md breakpoint) -->
     <div id="main-nav"
-        class="hidden absolute top-14 right-0 px-5 py-10 bg-red-400 h-screen flex flex-col 
+        class=" hidden absolute top-14 right-0 px-5 py-10 bg-red-400 h-screen flex flex-col 
         md:flex md:space-y-0 md:relative md:top-0 md:right-0 md:p-0 md:flex-row md:h-full md:flex-grow md:justify-between md:items-center md:ml-10">
         <!-- Menu Links -->
         <div
-            class="order-last flex flex-col items-end text-white space-y-3  md:flex-row md:items-start md:order-first md:space-y-0 md:space-x-3 text-sm font-medium">
+            class="flex flex-col items-end text-white space-y-3  md:flex-row md:items-start md:order-first md:space-y-0 md:space-x-3 text-sm font-medium">
             <a class="text-white hover:underline ml-2" href="#">Home</a>
             <a class="hover:text-white hover:underline" href="{% url 'homer:projects' %}">All Projects</a>
             <div @click.away="open = false" class="relative" x-data="{ open: false }">
@@ -69,7 +70,7 @@
             <span class="mr-2">Welcome {{ request.user.username }}</span>
                 <a href="{% url 'logout' %}" class="mr-6 text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline">Logout</a>
 
-                <a href="{% url 'homer:profile' %}" class="mr-6 text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline">Profile</a>
+                <a href="{% url 'homer:profile' request.user.username %}" class="mr-6 text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline">Profile</a>
             {% else %}
 
               <a href="{% url 'signup' %}" class="mr-6 text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline">Signup</a>
@@ -85,6 +86,7 @@
             id="toggle-menu-icon" class="fa-bars fa-solid"></i></a>
 
 </nav>
+
 
 <!-- Other content -->
 

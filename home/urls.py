@@ -4,7 +4,8 @@ from .views import (
         projects, register_project,
         project_details, update_project,
         delete_image, delete_project,
-        my_projects, ProfileView
+        my_projects, ProfileUpdateView,
+        ProfileView
     )
 
 
@@ -21,8 +22,9 @@ urlpatterns = [
     path('projects/<int:pk>/update_project', update_project, name='update_project'),
     path('projects/<int:pk>/delete_image', delete_image, name='delete_image'),
     path('projects/<int:pk>/delete_project', delete_project, name='delete_project'),
-    path('profile', ProfileView.as_view(), name='profile'),
-    path('profile', Profile.as_view(), name='profile'),
+    path('profile/@<str:username>', ProfileView.as_view(), name='profile'),
+    path('profile-update', ProfileUpdateView.as_view(), name='profile_update'),
+    
 
     path('myprojects', my_projects, name='myprojects'),
 ]

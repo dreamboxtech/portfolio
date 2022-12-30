@@ -2,15 +2,21 @@ from django.core.mail import send_mail
 from django.shortcuts import render, HttpResponse, redirect, reverse
 from django.forms import modelformset_factory, inlineformset_factory
 from django.contrib import messages
-from django.views.generic import DeleteView, UpdateView, CreateView, DetailView
+from django.views.generic import ( 
+			DeleteView, UpdateView,
+			CreateView, DetailView,
+			TemplateView
+			)
 from django.contrib.auth.views import LoginView 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
 
 from django.core.paginator import Paginator
 from .forms import ProjectForm, ImageForm, CustomUserCreationForm, ProfileForm
 from .models import Project, Images, User, UserProfile
 from datetime import datetime
+
 
 
 
@@ -27,11 +33,11 @@ def about(request):
 
 # Profile
 
-class ProfileView(CreateView):
+class ProfileUpdateView(LoginRequiredMixin, CreateView):
 	model = UserProfile
 	form_class = ProfileForm
-	template_name = 'home/profile.html'
-	success_url = '/profile'
+	template_name = 'home/profile_update.html'
+	success_url = '/profile-update'
 	# extra_context={'users': YourModel.objects.all()} #Alternative approach to set context data
 
 
@@ -39,7 +45,7 @@ class ProfileView(CreateView):
 		"""
 		Add to form data, set user before form save
 		"""
-		kwargs = super(Profile, self).get_form_kwargs()
+		kwargs = super(ProfileUpdateView, self).get_form_kwargs()
 		if kwargs['instance'] is None:
 			kwargs['instance'] = UserProfile()
 		kwargs['instance'].user = self.request.user
@@ -49,7 +55,7 @@ class ProfileView(CreateView):
 		"""
 			Set context data with this method
 		"""
-		context = super(Profile, self).get_context_data()
+		context = super(ProfileUpdateView, self).get_context_data()
 		context['profile'] = UserProfile.objects.filter(user__id=self.request.user.id)
 		return context
 
@@ -95,7 +101,37 @@ class ProfileView(CreateView):
 # 		'form': form,
 # 		'profile': profile
 # 	}
-# 	return render(request, 'home/profile.html', context)
+# 	return render(request, 'home/profile_update.html', context)
+
+
+class ProfileView(DetailView):
+
+	template_name = 'home/profile.html'
+	model = UserProfile
+
+	def get_object(self):
+		return get_object_or_404(User, username=self.kwargs['username'])
+
+	def get_context_data(self, **kwargs):
+		context = super(ProfileView, self).get_context_data(**kwargs)
+		context['profile'] = UserProfile.objects.get(user__id=self.request.user.id)
+		context['user'] = User.objects.get(id=self.request.user.id)
+
+		# query project table
+		try:
+			num_projects = Project.objects.filter(user__id=self.request.user.id).count()
+		except:
+			num_projects = 0
+		context['num_projects'] = num_projects
+
+		print("Current user projects: ", num_projects)
+
+		return context
+
+
+
+
+
 
 
 
