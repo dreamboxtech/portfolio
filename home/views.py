@@ -25,7 +25,7 @@ def home(request):
 	return render(request, 'index.html')
 
 def contact(request):
-	return render(request, 'contact.html')
+	return render(request, 'home/test.html')
 
 def about(request):
 	# return HttpResponse("Fast forward")
@@ -57,7 +57,7 @@ class ProfileUpdateView(LoginRequiredMixin, CreateView):
 		control form before save
 		"""
 		# print("form is: ", form.cleaned_data)
-		
+
 		obj = form.save(commit=False)
 		obj.user = self.request.user
 		obj.country = form.cleaned_data['country']
