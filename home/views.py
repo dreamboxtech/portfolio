@@ -41,15 +41,30 @@ class ProfileUpdateView(LoginRequiredMixin, CreateView):
 	# extra_context={'users': YourModel.objects.all()} #Alternative approach to set context data
 
 
-	def get_form_kwargs(self):
+	# def get_form_kwargs(self):
+	# 	"""
+	# 	Add to form data, set user before form save
+	# 	"""
+	# 	kwargs = super(ProfileUpdateView, self).get_form_kwargs()
+	# 	if kwargs['instance'] is None:
+	# 		kwargs['instance'] = UserProfile()
+	# 	kwargs['instance'].user = self.request.user
+		
+	# 	return kwargs
+
+	def form_valid(self, form):
 		"""
-		Add to form data, set user before form save
+		control form before save
 		"""
-		kwargs = super(ProfileUpdateView, self).get_form_kwargs()
-		if kwargs['instance'] is None:
-			kwargs['instance'] = UserProfile()
-		kwargs['instance'].user = self.request.user
-		return kwargs
+		# print("form is: ", form.cleaned_data)
+		
+		obj = form.save(commit=False)
+		obj.user = self.request.user
+		obj.country = form.cleaned_data['country']
+		obj.state = form.cleaned_data['state']
+		obj.city = form.cleaned_data['city']
+
+		return super(ProfileUpdateView, self).form_valid(form)
 
 	def get_context_data(self):
 		"""

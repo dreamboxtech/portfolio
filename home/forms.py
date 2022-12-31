@@ -18,19 +18,14 @@ from phonenumber_field.widgets import (
 
 
 
-
 class ProfileForm(forms.ModelForm):
 	phone = PhoneNumberField(widget=PhoneNumberPrefixWidget(initial='GH',
 		# attrs= {'class': 'bg-blue-200 rounded'}, 
 		country_attrs={'class': 'border-solid border border-gray-300 w-auto rounded-lg mr-1 h-10 text-xs'}, 
-		number_attrs={'class': 'border-solid border border-gray-300 w-auto rounded-lg h-10 text-xs mt-1'}),
+		number_attrs={'class': 'border-solid border border-gray-300 w-auto rounded-lg h-10 text-xs mt-1 ml-2'}),
 		)
 
-	# def __init__(self, user, *args, **kwargs):
-	# 	self.user = user
-	# 	super(ProfileForm, self).__init__(*args, **kwargs)
-	
-	# user = form.CharField(initial=get_user_model())
+
 	class Meta:
 		model = UserProfile
 		
@@ -38,15 +33,11 @@ class ProfileForm(forms.ModelForm):
 		exclude = ('user',)
 
 		widgets = {
-			'address': forms.TextInput(attrs={'class': 'col-md-4 w-19'})
+			'address': forms.TextInput(attrs={'class': 'col-md-4 w-19'}),
+			# 'country': forms.Select(attrs={'class': "countries", 'name': 'country', 'id': 'countryId'})
 			}
 
-	
-
 		
-
-
-
 
 
 class ProjectForm(forms.ModelForm):
@@ -79,7 +70,7 @@ class ProjectForm(forms.ModelForm):
 			'date_started': forms.TextInput(attrs={'type': 'date'}),
 			'date_ended': forms.TextInput(attrs={'type': 'date', 'max': datetime.now()}),
 			'images': ClearableFileInput(attrs={'multiple': True}),
-			'contributors': forms.TextInput(attrs={'placeholder':'Comma separated'}),
+			'contributors': forms.TextInput(attrs={'placeholder':'Comma separated'})
 
 	}
 	
