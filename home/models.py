@@ -30,7 +30,7 @@ class UserProfile(models.Model):
 	country = models.CharField(max_length=70, blank=False, verbose_name="Country")
 	state = models.CharField(max_length=70, blank=False, verbose_name="Country")
 	city = models.CharField(max_length=70, blank=False, verbose_name="Country")
-	about = RichTextField(max_length=500, verbose_name="About Me", config_name='another_config')
+	about = RichTextField(max_length=2000, verbose_name="About Me", config_name='another_config')
 	address = models.CharField(max_length=150, blank=True, verbose_name="Address")
 	phone = PhoneNumberField(null=False, blank=False, unique=True)
 	job_title = models.CharField(max_length=100, verbose_name="Job title", help_text="e.g. Data Engineer")

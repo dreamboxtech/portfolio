@@ -124,17 +124,26 @@ class ProfileView(DetailView):
 	template_name = 'home/profile.html'
 	model = UserProfile
 
+	# An elegant way to get url parameter
+	# @property
+	# def username(self):
+	# 	return self.kwargs['username']
+
 	def get_object(self):
 		return get_object_or_404(User, username=self.kwargs['username'])
 
 	def get_context_data(self, **kwargs):
+
+		self.username = self.kwargs['username'] #get url data
+
 		context = super(ProfileView, self).get_context_data(**kwargs)
-		context['profile'] = UserProfile.objects.get(user__id=self.request.user.id)
-		context['user'] = User.objects.get(id=self.request.user.id)
+		context['profile'] = UserProfile.objects.get(user__username=self.username)
+		context['user'] = User.objects.get(username=self.username)
+		context['projects'] = Project.objects.filter(user__username=self.username)
 
 		# query project table
 		try:
-			num_projects = Project.objects.filter(user__id=self.request.user.id).count()
+			num_projects = Project.objects.filter(user__username=self.username).count()
 		except:
 			num_projects = 0
 		context['num_projects'] = num_projects
